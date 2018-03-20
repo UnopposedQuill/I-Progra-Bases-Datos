@@ -57,10 +57,27 @@ create table GrupoXEstudiante(
 	notaAcumulada smallint
 )
 
+create table GrupoXRubro(
+	id int identity primary key,
+	FKRubro int constraint FKRubro foreign key references Rubro(id),
+	FKGrupo int constraint FKGrupo foreign key references Grupo(id),
+	valor smallint,
+	esFijo bit,
+	contador int
+)
+
+create table Evaluacion(
+	id int identity primary key,
+	FKGrupoXRubro int constraint FKGrupoXRubro foreign key references GrupoXRubro(id),
+	nombre nvarchar(20),
+	fecha date,
+	valorPorcentual smallint,
+	descripcion nvarchar(100),
+)
+
 create table EvaluacionXEstudiante(
 	id int identity primary key,
-	FKEstudiante int constraint FKEstudiante foreign key references Estudiante(id),
-	FKGrupo int constraint FKGrupo foreign key references Grupo(id),
-	FKEstadoEstudiante int constraint FKEstadoEstudiante foreign key references EstadoEstudiante(id),
-	notaAcumulada smallint
+	FKEvaluacion int constraint FKEvaluacion foreign key references Evaluacion(id),
+	FKGrupoXEstudiante int constraint FKGrupoXEstudiante foreign key references GrupoXEstudiante(id),
+	nota smallint
 )
