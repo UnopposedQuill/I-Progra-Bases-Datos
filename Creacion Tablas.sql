@@ -1,5 +1,5 @@
 
-use [I Progra]
+use [I_Progra]
 
 /*
 primero crearé las tablas que no poseen ninguna FK
