@@ -1,0 +1,24 @@
+$fondo: #f0f0f0;
+$colorMenu: black;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: $fondo;
+}
+
+li{
+    flex: 1 0 auto;
+}
+
+li a {
+    color: $colorMenu;
+    padding: 8px;
+    text-decoration: none;
+}
+
+li a:hover{
+    background-color: gray;
+    color: white;
+}
