@@ -8,7 +8,7 @@ export const RouterConfig: Route[]=[
     {path: 'registro',component: HomeComponent},
     {path: 'login',component: LoginComponent},
     {path: '',redirectTo:'home', pathMatch: "full"},
-    {path: '**',redirectTo:'home',
+    {path: '**',redirectTo:'home'},
 
 
 
