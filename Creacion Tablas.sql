@@ -7,38 +7,44 @@ y luego iré satisfaciendo dependencias
 */
 create table EstadoEstudiante(
 	id int identity primary key,
-	nombre nvarchar(20) not null
+	nombre nvarchar(20) not null,
+	habilitado bit not null
 )
 
 create table Rubro(
 	id int identity primary key,
-	nombre nvarchar(20) not null
+	nombre nvarchar(20) not null,
+	habilitado bit not null
 )
 
 create table EstadoGrupo(
 	id int identity primary key,
-	nombre nvarchar(20) not null
+	nombre nvarchar(20) not null,
+	habilitado bit not null
 )
 
 create table Estudiante(
 	id int identity primary key,
 	nombre nvarchar(50) not null,
-	email nvarchar(50) not null,
-	contraseña nvarchar(8) not null
+	email nvarchar(50) unique not null,
+	contraseña nvarchar(8) not null,
+	habilitado bit not null
 )
 
 create table Profesor(
 	id int identity primary key,
 	nombre nvarchar(50) not null,
-	email nvarchar(50) not null,
-	contraseña nvarchar(8) not null
+	email nvarchar(50) unique not null,
+	contraseña nvarchar(8) not null,
+	habilitado bit not null
 )
 
 create table Periodo(
 	id int identity primary key,
 	fechaInicio date not null,
 	fechaFinalizacion date not null,
-	activo bit not null
+	activo bit not null,
+	habilitado bit not null
 )
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -48,7 +54,8 @@ create table Grupo(
 	FKProfesor int constraint FKGrupo_Profesor foreign key references Profesor(id) not null,
 	FKEstadoGrupo int constraint FKGrupo_EstadoGrupo foreign key references EstadoGrupo(id) not null,
 	nombre nvarchar(50) not null,
-	codigoGrupo nvarchar(10) not null
+	codigoGrupo nvarchar(10) not null,
+	habilitado bit not null
 )
 
 create table GrupoXEstudiante(
@@ -56,7 +63,8 @@ create table GrupoXEstudiante(
 	FKEstudiante int constraint FKGrupoXEstudiante_Estudiante foreign key references Estudiante(id) not null,
 	FKGrupo int constraint FKGrupoXEstudiante_Grupo foreign key references Grupo(id) not null,
 	FKEstadoEstudiante int constraint FKGrupoXEstudiante_EstadoEstudiante foreign key references EstadoEstudiante(id) not null,
-	notaAcumulada smallint not null check (notaAcumulada > 0 and notaAcumulada <= 100) --entre 0 y 100
+	notaAcumulada smallint not null check (notaAcumulada > 0 and notaAcumulada <= 100), --entre 0 y 100
+	habilitado bit not null
 )
 
 create table GrupoXRubro(
@@ -65,7 +73,8 @@ create table GrupoXRubro(
 	FKGrupo int constraint FKGrupoXRubro_Grupo foreign key references Grupo(id) not null,
 	valor smallint not null check (valor > 0),
 	esFijo bit not null,
-	contador int not null check (contador > 0)
+	contador int not null check (contador > 0),
+	habilitado bit not null
 )
 
 create table Evaluacion(
@@ -75,11 +84,13 @@ create table Evaluacion(
 	fecha date not null,
 	valorPorcentual smallint not null check (valorPorcentual > 0),
 	descripcion nvarchar(100) not null,
+	habilitado bit not null
 )
 
 create table EvaluacionXEstudiante(
 	id int identity primary key,
 	FKEvaluacion int constraint FKEvaluacionXEstudiante_Evaluacion foreign key references Evaluacion(id) not null,
 	FKGrupoXEstudiante int constraint FKEvaluacionXEstudiante_GrupoXEstudiante foreign key references GrupoXEstudiante(id) not null,
-	nota smallint not null check (nota > 0)
+	nota smallint not null check (nota > 0),
+	habilitado bit not null
 )
