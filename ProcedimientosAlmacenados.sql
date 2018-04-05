@@ -7,13 +7,13 @@ go
 
 if object_id('SPeliminarProfesor','P') is not null drop procedure SPeliminarProfesor;
 go
-create procedure SPeliminarProfesor @nombre nvarchar(50) not null, @email nvarchar(50) not null, @contraseña nvarchar(8) not null
+create procedure SPeliminarProfesor @email nvarchar(50) not null, @contraseña nvarchar(8) not null
 as begin
 	set nocount on;
 	begin transaction
 		update dbo.Profesor 
 		set habilitado = 0
-		where email = @email;
+		where email = @email and contraseña = @contraseña;--asegurarme que la contraseña sí sea la misma
 	commit
 end
 go
@@ -32,3 +32,14 @@ as begin
 	set nocount on;
 	insert into Profesor(nombre, email, contraseña) values(@nombre, @email, @contraseña);
 end
+go
+
+if object_id('SPinsertarEstudiante','P') is not null drop procedure SPinsertarEstudiante;
+go
+create procedure SPinsertarEstudiante @nombre nvarchar(50) not null, @email nvarchar(50) not null, @contraseña nvarchar(8) not null
+as begin
+	set nocount on;
+	insert into Profesor(nombre, email, contraseña) values(@nombre, @email, @contraseña);
+end
+go
+
