@@ -1,4 +1,7 @@
 
+if OBJECT_ID('I_Progra', 'D') is null
+	create database [I_Progra];
+go
 use [I_Progra]
 go
 
@@ -8,8 +11,8 @@ create procedure SPeliminarProfesor @nombre nvarchar(50) not null, @email nvarch
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.Profesor
-		set habilitado = false
+		update dbo.Profesor 
+		set habilitado = 0
 		where email = @email;
 	commit
 end
