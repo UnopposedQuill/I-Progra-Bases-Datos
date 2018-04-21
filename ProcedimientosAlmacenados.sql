@@ -11,10 +11,18 @@ create procedure SPeliminarProfesor @email nvarchar(50), @contraseña nvarchar(8)
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.Profesor
-		set habilitado = 0
-		where email = @email and contraseña = @contraseña;--asegurarme que la contraseña sí sea la misma
-	commit
+		begin try
+			update dbo.Profesor
+			set habilitado = 0
+			where email = @email and contraseña = @contraseña;--asegurarme que la contraseña sí sea la misma
+			commit
+			return (select P.id from Profesor P where @email = P.email);
+		end try
+		begin catch
+			rollback
+			return -50001;
+		end catch
+	
 end
 go
 
@@ -42,10 +50,17 @@ create procedure SPeliminarEstudiante @email nvarchar(50), @carnet nvarchar(15)
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.Estudiante
-		set habilitado = 0
-		where email = @email and carnet = @carnet;--asegurarme que la contraseña sí sea la misma
-	commit
+		begin try
+			update dbo.Estudiante
+			set habilitado = 0
+			where email = @email and carnet = @carnet;--asegurarme que la contraseña sí sea la misma
+			commit
+			return (select E.id from Estudiante E where @email = E.email);
+		end try
+		begin catch
+			rollback
+			return -50001;
+		end catch
 end
 go
 
@@ -84,10 +99,17 @@ create procedure SPeliminarPeriodo @fechaInicio date, @fechaFinalizacion date
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.Periodo
-		set habilitado = 0
-		where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion;
-	commit
+		begin try
+			update dbo.Periodo
+			set habilitado = 0
+			where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion;
+			commit
+			return (select P.id from Periodo P where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion);
+		end try
+		begin catch
+			rollback
+			return -50001;
+		end catch
 end
 go
 
@@ -105,11 +127,31 @@ go
 create procedure SPeliminarGrupo @codigoGrupo nvarchar(10)
 as begin
 	set nocount on;
+	declare @idGrupo int = (select G.id from Grupo G where G.codigoGrupo = @codigoGrupo);
 	begin transaction
-		update dbo.Grupo
-		set habilitado = 0
-		where @codigoGrupo = codigoGrupo
-	commit
+		begin try
+			update dbo.Grupo
+			set habilitado = 0
+			where @idGrupo = id;
+			update dbo.GrupoXEstudiante
+			set habilitado = 0
+			where GrupoXEstudiante.FKGrupo = @idGrupo;
+			update dbo.GrupoXRubro
+			set habilitado = 0
+			where GrupoXRubro.FKGrupo = @idGrupo;
+			update dbo.Evaluacion
+			set habilitado = 0
+			where Evaluacion.FKGrupoXRubro = (select GxR.id from GrupoXRubro GxR where GxR.FKGrupo = @idGrupo);
+			update dbo.EvaluacionXEstudiante
+			set habilitado = 0
+			where EvaluacionXEstudiante.FKGrupoXEstudiante = (select GxE.id from GrupoXEstudiante GxE where GxE.FKGrupo = @idGrupo);
+			commit
+			return @idGrupo
+		end try
+		begin catch
+			rollback
+			return -50001;
+		end catch
 end
 go
 
@@ -128,10 +170,17 @@ create procedure SPeliminarEstadoEstudiante @nombre nvarchar(20)
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.EstadoEstudiante
-		set habilitado = 0
-		where nombre = @nombre
-	commit
+		begin try
+			update dbo.EstadoEstudiante
+			set habilitado = 0
+			where nombre = @nombre
+			commit
+			return (select E.id from EstadoEstudiante E where @nombre = nombre and habilitado = 0);
+		end try
+		begin catch
+			rollback
+			return -50001;
+		end catch
 end
 go
 
@@ -145,6 +194,7 @@ as begin
 end
 go
 
+--SP No usado-------------------------------------------------------------------------------------------
 if object_id('SPeliminarGrupoXEstudiante','P') is not null drop procedure SPeliminarGrupoXEstudiante;
 go
 create procedure SPeliminarGrupoXEstudiante @codigoEstudiante int, @codigoGrupo int
@@ -157,6 +207,7 @@ as begin
 	commit
 end
 go
+--SP No usado-------------------------------------------------------------------------------------------
 
 if object_id('SPinsertarRubro','P') is not null drop procedure SPinsertarRubro;
 go
@@ -197,7 +248,7 @@ as begin
 	begin transaction
 		update dbo.GrupoXRubro
 		set habilitado = 0
-		where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id);
+		where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id and habilitado = 1);
 	commit
 end
 go
@@ -219,7 +270,7 @@ as begin
 	begin transaction
 		update dbo.Evaluacion
 		set habilitado = 0
-		where @idEvaluacion = id;
+		where @idEvaluacion = id and not exists(select * from EvaluacionXEstudiante ExE where ExE.FKEvaluacion = id and ExE.habilitado = 1);
 	commit
 end
 go
@@ -266,9 +317,3 @@ as begin
 end
 go
 --prototipo------------------------------------------------------------------------------------
-/*
-declare @idProfesorAInsertar int;--una variable temporal que
-	select @idProfesorAInsertar = P.id from Profesor P where P.email = @email;--contendría un supuesto profesor, es para evitar repetidos (mismo email = ya existía)
-	if OBJECT_ID(@idProfesorAInsertar) is null throw 51000, 'El profesor ya existía previamente', 1;--ya existía, así que lanza una excepción
-insert into Profesor(nombre, email, contraseña) values(@nombre, @email, @contraseña);
-*/
