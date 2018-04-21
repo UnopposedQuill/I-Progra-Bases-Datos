@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ProyectoBases.Models;
 
 namespace ProyectoBases.Models
 {
@@ -14,5 +15,7 @@ namespace ProyectoBases.Models
         }
 
         public DbSet<ProyectoBases.Models.Profesor> Profesor { get; set; }
+
+        public DbSet<ProyectoBases.Models.Estudiante> Estudiante { get; set; }
     }
 }

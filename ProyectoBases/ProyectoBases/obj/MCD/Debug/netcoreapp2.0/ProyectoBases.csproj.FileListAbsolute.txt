@@ -1,0 +1,11 @@
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\bin\MCD\Debug\netcoreapp2.0\ProyectoBases.deps.json
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\bin\MCD\Debug\netcoreapp2.0\ProyectoBases.runtimeconfig.json
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\bin\MCD\Debug\netcoreapp2.0\ProyectoBases.runtimeconfig.dev.json
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\bin\MCD\Debug\netcoreapp2.0\ProyectoBases.dll
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\bin\MCD\Debug\netcoreapp2.0\ProyectoBases.pdb
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.csprojResolveAssemblyReference.cache
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.csproj.CoreCompileInputs.cache
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.AssemblyInfoInputs.cache
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.AssemblyInfo.cs
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.dll
+C:\Users\AEGS\Documents\GitHub\I-Progra-Bases-Datos\ProyectoBases\ProyectoBases\obj\MCD\Debug\netcoreapp2.0\ProyectoBases.pdb

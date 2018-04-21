@@ -39,8 +39,8 @@ namespace ProyectoBases
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
             app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

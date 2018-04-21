@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -9,6 +10,12 @@ import { RegistroComponent } from './registro/registro.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { RouterConfig } from './router.config';
+import { NotificationComponent } from './shared/notification/notification.component';
+import { NotificationService } from './shared/notification/notification.service';
+import { UsuarioComponent } from './usuario/usuario.component';
+import { UsuarioService } from './usuario/usuario.service';
+import { VariableService } from './shared/variable.service';
+import { UsuarioContenidoComponent } from './usuario/usuario-contenido/usuario-contenido.component';
 
 
 @NgModule({
@@ -17,13 +24,19 @@ import { RouterConfig } from './router.config';
     HomeComponent,
     LoginComponent,
     RegistroComponent,
-    MenuComponent
+    MenuComponent,
+    NotificationComponent,
+    UsuarioComponent,
+    UsuarioContenidoComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(RouterConfig)
+    RouterModule.forRoot(RouterConfig),
+    HttpClientModule,
+    ReactiveFormsModule
+
   ],
-  providers: [],
+  providers: [NotificationService, UsuarioService,VariableService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
