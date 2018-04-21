@@ -10,19 +10,16 @@ go
 create procedure SPeliminarProfesor @email nvarchar(50), @contraseña nvarchar(8)
 as begin
 	set nocount on;
-	begin transaction
-		begin try
-			update dbo.Profesor
-			set habilitado = 0
-			where email = @email and contraseña = @contraseña;--asegurarme que la contraseña sí sea la misma
-			commit
-			return (select P.id from Profesor P where @email = P.email);
-		end try
-		begin catch
-			rollback
-			return -50001;
-		end catch
-	
+	begin try
+		update dbo.Profesor
+		set habilitado = 0
+		where email = @email and contraseña = @contraseña;--asegurarme que la contraseña sí sea la misma
+		if(@@ROWCOUNT > 0) return (select id from Profesor where @email = email);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -31,7 +28,13 @@ go
 create procedure SPinsertarProfesor @nombre nvarchar(50), @apellido nvarchar(50), @email nvarchar(50), @contraseña nvarchar(8)
 as begin
 	set nocount on;
-	insert into Profesor(nombre, apellido, email, contraseña) values(@nombre, @apellido, @email, @contraseña);
+	begin try
+		insert into Profesor(nombre, apellido, email, contraseña) values(@nombre, @apellido, @email, @contraseña);
+		return @@identity;
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -40,7 +43,13 @@ go
 create procedure SPinsertarEstudiante @nombre nvarchar(50), @apellido nvarchar(50), @email nvarchar(50), @carnet nvarchar(15), @telefono nvarchar(8)
 as begin
 	set nocount on;
-	insert into Estudiante(nombre, apellido, email, carnet, telefono) values (@nombre, @apellido, @email, @carnet, @telefono);
+	begin try
+		insert into Estudiante(nombre, apellido, email, carnet, telefono) values (@nombre, @apellido, @email, @carnet, @telefono);
+		return @@identity;
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -49,18 +58,16 @@ go
 create procedure SPeliminarEstudiante @email nvarchar(50), @carnet nvarchar(15)
 as begin
 	set nocount on;
-	begin transaction
-		begin try
-			update dbo.Estudiante
-			set habilitado = 0
-			where email = @email and carnet = @carnet;--asegurarme que la contraseña sí sea la misma
-			commit
-			return (select E.id from Estudiante E where @email = E.email);
-		end try
-		begin catch
-			rollback
-			return -50001;
-		end catch
+	begin try
+		update dbo.Estudiante
+		set habilitado = 0
+		where email = @email and carnet = @carnet;--asegurarme que la contraseña sí sea la misma
+		if(@@ROWCOUNT > 0) return (select E.id from Estudiante E where @email = E.email);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -104,6 +111,7 @@ as begin
 				set email = @nuevoEmail, contraseña = @nuevaContraseña
 				where email = @email and contraseña = @contraseña
 				commit;
+				return (select id from Profesor P where P.email = @email)
 			end try
 			begin catch
 				rollback;
@@ -118,6 +126,7 @@ as begin
 				set email = @nuevoEmail
 				where email = @email
 				commit;
+				return (select id from Estudiante E where E.email = @email)
 			end try
 			begin catch
 				rollback;
@@ -133,7 +142,13 @@ go
 create procedure SPinsertarPeriodo @fechaInicio date, @fechaFinalizacion date
 as begin
 	set nocount on;
-	insert into Periodo(fechaInicio, fechaFinalizacion) values (@fechaInicio, @fechaFinalizacion);
+	begin try
+		insert into Periodo(fechaInicio, fechaFinalizacion) values (@fechaInicio, @fechaFinalizacion);
+		return @@identity
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -142,18 +157,16 @@ go
 create procedure SPeliminarPeriodo @fechaInicio date, @fechaFinalizacion date
 as begin
 	set nocount on;
-	begin transaction
-		begin try
-			update dbo.Periodo
-			set habilitado = 0
-			where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion;
-			commit
-			return (select P.id from Periodo P where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion);
-		end try
-		begin catch
-			rollback
-			return -50001;
-		end catch
+	begin try
+		update dbo.Periodo
+		set habilitado = 0
+		where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion;
+		if(@@ROWCOUNT > 0) return (select P.id from Periodo P where @fechaInicio = fechaInicio and @fechaFinalizacion = fechaFinalizacion);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -162,7 +175,13 @@ go
 create procedure SPinsertarGrupo @nombre nvarchar(50), @codigoGrupo nvarchar(10), @idProfesor int, @idPeriodo int
 as begin
 	set nocount on;
-	insert into Grupo(nombre, codigoGrupo, FKProfesor, FKPeriodo) values (@nombre, @codigoGrupo, @idProfesor, @idPeriodo);
+	begin try
+		insert into Grupo(nombre, codigoGrupo, FKProfesor, FKPeriodo) values (@nombre, @codigoGrupo, @idProfesor, @idPeriodo);
+		return @@identity;
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -204,7 +223,13 @@ go
 create procedure SPinsertarEstadoEstudiante @nombre nvarchar(20)
 as begin
 	set nocount on;
-	insert into EstadoEstudiante(nombre) values (@nombre)
+	begin try
+		insert into EstadoEstudiante(nombre) values (@nombre)
+		return @@identity
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -213,18 +238,16 @@ go
 create procedure SPeliminarEstadoEstudiante @nombre nvarchar(20)
 as begin
 	set nocount on;
-	begin transaction
-		begin try
-			update dbo.EstadoEstudiante
-			set habilitado = 0
-			where nombre = @nombre
-			commit
-			return (select E.id from EstadoEstudiante E where @nombre = nombre and habilitado = 0);
-		end try
-		begin catch
-			rollback
-			return -50001;
-		end catch
+	begin try
+		update dbo.EstadoEstudiante
+		set habilitado = 0
+		where nombre = @nombre
+		if(@@ROWCOUNT > 0) return (select E.id from EstadoEstudiante E where @nombre = nombre);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -234,7 +257,13 @@ go
 create procedure SPinsertarGrupoXEstudiante @idEstudiante int, @idGrupo int, @idEstadoEstudiante int, @notaAcumulada float = -1
 as begin
 	set nocount on;
-	insert into GrupoXEstudiante(FKEstudiante, FKGrupo, FKEstadoEstudiante, notaAcumulada) values (@idEstudiante, @idGrupo, @idEstadoEstudiante, @notaAcumulada);
+	begin try
+		insert into GrupoXEstudiante(FKEstudiante, FKGrupo, FKEstadoEstudiante, notaAcumulada) values (@idEstudiante, @idGrupo, @idEstadoEstudiante, @notaAcumulada);
+		return @@identity;
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -243,9 +272,16 @@ go
 create procedure SPeliminarGrupoXEstudiante @codigoEstudiante int, @codigoGrupo int
 as begin
 	set nocount on;
-	update dbo.GrupoXEstudiante
-	set habilitado = 0
-	where @codigoGrupo = GrupoXEstudiante.FKGrupo and @codigoEstudiante = GrupoXEstudiante.FKEstudiante;
+	begin try
+		update dbo.GrupoXEstudiante
+		set habilitado = 0
+		where @codigoGrupo = GrupoXEstudiante.FKGrupo and @codigoEstudiante = GrupoXEstudiante.FKEstudiante;
+		if(@@ROWCOUNT > 0) return (select GxE.id from GrupoXEstudiante GxE where @codigoGrupo = GxE.FKGrupo and @codigoEstudiante = GxE.FKEstudiante);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -254,7 +290,13 @@ go
 create procedure SPinsertarRubro @nombreRubro varchar(20)
 as begin
 	set nocount on;
-	insert into Rubro(nombre) values (@nombreRubro);
+	begin try
+		insert into Rubro(nombre) values (@nombreRubro);
+		return @@identity
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -263,9 +305,16 @@ go
 create procedure SPeliminarRubro @nombreRubro nvarchar(20)
 as begin
 	set nocount on;
-	update dbo.Rubro
-	set habilitado = 0
-	where @nombreRubro = nombre;
+	begin try
+		update dbo.Rubro
+		set habilitado = 0
+		where @nombreRubro = nombre;
+		if(@@ROWCOUNT > 0) return (select R.id from Rubro R where R.nombre = @nombreRubro);
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -274,7 +323,13 @@ go
 create procedure SPinsertarGrupoXRubro @idRubro int, @idGrupo int, @valorPorcentual float, @cantidad int, @esFijo bit
 as begin
 	set nocount on;
-	insert into GrupoXRubro(FKRubro, FKGrupo, valorPorcentual, contador, esFijo) values (@idRubro, @idGrupo, @valorPorcentual, @cantidad, @esFijo);
+	begin try
+		insert into GrupoXRubro(FKRubro, FKGrupo, valorPorcentual, contador, esFijo) values (@idRubro, @idGrupo, @valorPorcentual, @cantidad, @esFijo);
+		return @@identity
+	end try
+	begin catch
+		return -50001;
+	end catch
 end
 go
 
@@ -283,9 +338,16 @@ go
 create procedure SPeliminarGrupoXRubro @idRubro int, @idGrupo int
 as begin
 	set nocount on;
-	update dbo.GrupoXRubro
-	set habilitado = 0
-	where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id and habilitado = 1);
+	begin try
+		update dbo.GrupoXRubro
+		set habilitado = 0
+		where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id and habilitado = 1);
+		if(@@ROWCOUNT > 0) return (select GxR.id from GrupoXRubro GxR where @idGrupo = FKGrupo and @idRubro = FKRubro)
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -304,6 +366,7 @@ as begin
 			else--sino, entonces tiene que dividirse equitativamente entre la cantidad actual de ese tipo de evaluaciones
 				insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, (select valorPorcentual from GrupoXRubro where id = @idGrupoXRubro)/(select contador from GrupoXRubro where id = @idGrupoXRubro), @descripcion);
 			commit
+			return @@identity
 		end try
 		begin catch
 			rollback;
@@ -317,16 +380,16 @@ go
 create procedure SPeliminarEvaluacion @idEvaluacion int
 as begin
 	set nocount on;
-	begin transaction
-		begin try
-			update dbo.Evaluacion
-			set habilitado = 0
-			where @idEvaluacion = id and not exists(select * from EvaluacionXEstudiante ExE where ExE.FKEvaluacion = id and ExE.habilitado = 1);
-			commit
-		end try
-		begin catch
-			
-		end catch
+	begin try
+		update dbo.Evaluacion
+		set habilitado = 0
+		where @idEvaluacion = id and not exists(select * from EvaluacionXEstudiante ExE where ExE.FKEvaluacion = id and ExE.habilitado = 1);
+		if(@@ROWCOUNT > 0) return @idEvaluacion
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
@@ -342,6 +405,7 @@ as begin
 			set notaAcumulada = notaAcumulada+@nota*(select valorPorcentual from dbo.Evaluacion where id = @idEvaluacion)
 			where id = @idGrupoXEstudiante;
 			commit
+			return @@identity
 		end try
 		begin catch
 			rollback;
@@ -355,11 +419,16 @@ go
 create procedure SPeliminarEvaluacionXEstudiante @idEvaluacion int, @idGrupoXEstudiante int
 as begin
 	set nocount on;
-	begin transaction
+	begin try
 		update dbo.EvaluacionXEstudiante
 		set habilitado = 0
 		where @idEvaluacion = FKEvaluacion and @idGrupoXEstudiante = FKGrupoXEstudiante;
-	commit
+		if(@@ROWCOUNT > 0) return @idEvaluacion
+		else return -50001;
+	end try
+	begin catch
+		return -50002;
+	end catch
 end
 go
 
