@@ -1,5 +1,5 @@
 use master
-if exists(select * from sysdatabases where name = 'I_Progra') 
+if exists(select * from sysdatabases where name = 'I_Progra') and not exists(select 1 from [I_Progra].[dbo].[DatosControlBase])
 begin
 	use [I_Progra];
 	set nocount on;
@@ -177,6 +177,7 @@ begin
 				set @contador = @contador + 1;
 			end;
 
+			insert into dbo.DatosControlBase(datosSimulacionListos) values (1);--decirle a todos que la base está lista para la simulación
 		commit
 	end try
 	begin catch

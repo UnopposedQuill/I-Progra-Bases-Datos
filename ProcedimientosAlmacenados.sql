@@ -197,7 +197,7 @@ as begin
 	begin transaction
 		update dbo.GrupoXRubro
 		set habilitado = 0
-		where @idGrupo = FKGrupo and @idRubro = FKRubro;
+		where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id);
 	commit
 end
 go
@@ -207,7 +207,7 @@ go
 create procedure SPinsertarEvaluacion @idGrupoXRubro int, @nombre nvarchar(20), @fecha datetime, @valorPorcentual float, @descripcion nvarchar(100)
 as begin
 	set nocount on;
-	insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, @valorPorcentual, @valorPorcentual);
+	insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, @valorPorcentual, @descripcion);
 end
 go
 
