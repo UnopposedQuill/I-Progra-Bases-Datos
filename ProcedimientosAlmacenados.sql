@@ -80,7 +80,7 @@ as begin
 		return 1;
 	else if exists(select id from Estudiante E where E.email = @email and E.carnet = @contraseña)
 		return 2;
-	return -1
+	return -50001
 end
 go
 
@@ -111,8 +111,20 @@ as begin
 			end catch;
 		end
 	else if exists(select id from Estudiante E where E.email = @email and E.carnet = @contraseña)
-		return 2;
-	return -1
+		begin
+		begin transaction
+			begin try
+				update dbo.Estudiante
+				set email = @nuevoEmail
+				where email = @email
+				commit;
+			end try
+			begin catch
+				rollback;
+				return -50002;
+			end catch;
+		end
+	return -50003;
 end
 go
 
@@ -226,20 +238,16 @@ as begin
 end
 go
 
---SP No usado-------------------------------------------------------------------------------------------
 if object_id('SPeliminarGrupoXEstudiante','P') is not null drop procedure SPeliminarGrupoXEstudiante;
 go
 create procedure SPeliminarGrupoXEstudiante @codigoEstudiante int, @codigoGrupo int
 as begin
 	set nocount on;
-	begin transaction
-		update dbo.GrupoXEstudiante
-		set habilitado = 0
-		where @codigoGrupo = GrupoXEstudiante.FKGrupo and @codigoEstudiante = GrupoXEstudiante.FKEstudiante;
-	commit
+	update dbo.GrupoXEstudiante
+	set habilitado = 0
+	where @codigoGrupo = GrupoXEstudiante.FKGrupo and @codigoEstudiante = GrupoXEstudiante.FKEstudiante;
 end
 go
---SP No usado-------------------------------------------------------------------------------------------
 
 if object_id('SPinsertarRubro','P') is not null drop procedure SPinsertarRubro;
 go
@@ -255,11 +263,9 @@ go
 create procedure SPeliminarRubro @nombreRubro nvarchar(20)
 as begin
 	set nocount on;
-	begin transaction
-		update dbo.Rubro
-		set habilitado = 0
-		where @nombreRubro = nombre;
-	commit
+	update dbo.Rubro
+	set habilitado = 0
+	where @nombreRubro = nombre;
 end
 go
 
@@ -272,27 +278,37 @@ as begin
 end
 go
 
---SP No usado-------------------------------------------------------------------------------------------
 if object_id('SPeliminarGrupoXRubro','P') is not null drop procedure SPeliminarGrupoXRubro;
 go
 create procedure SPeliminarGrupoXRubro @idRubro int, @idGrupo int
 as begin
 	set nocount on;
-	begin transaction
-		update dbo.GrupoXRubro
-		set habilitado = 0
-		where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id and habilitado = 1);
-	commit
+	update dbo.GrupoXRubro
+	set habilitado = 0
+	where @idGrupo = FKGrupo and @idRubro = FKRubro and not exists(select * from Evaluacion E where E.FKGrupoXRubro = id and habilitado = 1);
 end
 go
---SP No usado-------------------------------------------------------------------------------------------
 
 if object_id('SPinsertarEvaluacion','P') is not null drop procedure SPinsertarEvaluacion;
 go
 create procedure SPinsertarEvaluacion @idGrupoXRubro int, @nombre nvarchar(20), @fecha datetime, @valorPorcentual float, @descripcion nvarchar(100)
 as begin
 	set nocount on;
-	insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, @valorPorcentual, @descripcion);
+	begin transaction
+		begin try
+			update dbo.GrupoXRubro
+			set contador = contador + 1
+			where dbo.GrupoXRubro.id = @idGrupoXRubro;
+			if(select esFijo from dbo.GrupoXRubro where id = @idGrupoXRubro) = 1--si es fijo, se coloca el valor porcentual de entrada
+				insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, @valorPorcentual, @descripcion);
+			else--sino, entonces tiene que dividirse equitativamente entre la cantidad actual de ese tipo de evaluaciones
+				insert into Evaluacion(FKGrupoXRubro, nombre, fecha, valorPorcentual, descripcion) values (@idGrupoXRubro, @nombre, @fecha, (select valorPorcentual from GrupoXRubro where id = @idGrupoXRubro)/(select contador from GrupoXRubro where id = @idGrupoXRubro), @descripcion);
+			commit
+		end try
+		begin catch
+			rollback;
+			return -50001;
+		end catch
 end
 go
 
@@ -302,10 +318,15 @@ create procedure SPeliminarEvaluacion @idEvaluacion int
 as begin
 	set nocount on;
 	begin transaction
-		update dbo.Evaluacion
-		set habilitado = 0
-		where @idEvaluacion = id and not exists(select * from EvaluacionXEstudiante ExE where ExE.FKEvaluacion = id and ExE.habilitado = 1);
-	commit
+		begin try
+			update dbo.Evaluacion
+			set habilitado = 0
+			where @idEvaluacion = id and not exists(select * from EvaluacionXEstudiante ExE where ExE.FKEvaluacion = id and ExE.habilitado = 1);
+			commit
+		end try
+		begin catch
+			
+		end catch
 end
 go
 
@@ -314,7 +335,18 @@ go
 create procedure SPinsertarEvaluacionXEstudiante @idEvaluacion int, @idGrupoXEstudiante int, @nota float
 as begin
 	set nocount on;
-	insert into EvaluacionXEstudiante(FKEvaluacion, FKGrupoXEstudiante, nota) values (@idEvaluacion, @idGrupoXEstudiante, @nota);
+	begin transaction
+		begin try
+			insert into EvaluacionXEstudiante(FKEvaluacion, FKGrupoXEstudiante, nota) values (@idEvaluacion, @idGrupoXEstudiante, @nota);
+			update dbo.GrupoXEstudiante
+			set notaAcumulada = notaAcumulada+@nota*(select valorPorcentual from dbo.Evaluacion where id = @idEvaluacion)
+			where id = @idGrupoXEstudiante;
+			commit
+		end try
+		begin catch
+			rollback;
+			return -50001;
+		end catch
 end
 go
 
@@ -331,13 +363,15 @@ as begin
 end
 go
 
---prototipo------------------------------------------------------------------------------------
+--prototipos-
+--(fueron sustituidos por mejoras en los procedimientos de inserción de evaluacion y evaluacionxestudiante)-------------
+/*
 if object_id('SPcalcularPonderadoGrupoXEstudiante','P') is not null drop procedure SPcalcularPonderadoGrupoXEstudiante;
 go
 create procedure SPcalcularPonderadoGrupoXEstudiante @carnetEstudiante nvarchar(15), @codigoGrupo nvarchar(10)
 as begin
 	set nocount on;
-	/*
+
 	update dbo.GrupoXEstudiante
 	set notaAcumulada = sum((select ExE.nota*Ev.valorPorcentual from dbo.EvaluacionXEstudiante ExE
 							inner join dbo.Evaluacion Ev on ExE.FKEvaluacion = Ev.id
@@ -347,7 +381,25 @@ as begin
 							where E.carnet = @carnetEstudiante and G.codigoGrupo = @codigoGrupo
 							))
 	where isnull((select E.id from Estudiante E where E.carnet = @carnetEstudiante),0) = FKEstudiante and @codigoGrupo = FKGrupo;
-	*/
+
 end
 go
---prototipo------------------------------------------------------------------------------------
+
+if object_id('SPcalcularPonderados','P') is not null drop procedure SPcalcularPonderados;
+go
+create procedure SPcalcularPonderados @carnetEstudiante nvarchar(15), @codigoGrupo nvarchar(10)
+as begin
+	set nocount on;
+	update dbo.GrupoXEstudiante
+	set notaAcumulada = sum((select ExE.nota*Ev.valorPorcentual from dbo.EvaluacionXEstudiante ExE
+							inner join dbo.Evaluacion Ev on ExE.FKEvaluacion = Ev.id
+							inner join dbo.GrupoXEstudiante GxE on ExE.FKGrupoXEstudiante = GxE.id
+							inner join dbo.Estudiante E on GxE.FKEstudiante = E.id
+							inner join dbo.Grupo G on GxE.FKGrupo = G.id
+							where E.carnet = @carnetEstudiante and G.codigoGrupo = @codigoGrupo
+							))
+	where isnull((select E.id from Estudiante E where E.carnet = @carnetEstudiante),0) = FKEstudiante and @codigoGrupo = FKGrupo;
+end
+go
+*/
+--prototipos------------------------------------------------------------------------------------
