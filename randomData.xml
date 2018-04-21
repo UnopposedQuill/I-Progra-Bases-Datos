@@ -541,35 +541,35 @@
 		<groupItem ID="1" itemID="1" groupID="1" percentage="4.485456167596401" count="1" constantCount="True" />
 		<groupItem ID="2" itemID="2" groupID="1" percentage="33.091283427489586" count="5" constantCount="True" />
 		<groupItem ID="3" itemID="3" groupID="1" percentage="28.131336627229203" count="2" constantCount="True" />
-		<groupItem ID="4" itemID="4" groupID="1" percentage="34.291923777684815" count="1" constantCount="True" />
+		<groupItem ID="4" itemID="4" groupID="1" percentage="34.291923777684815" count="1" constantCount="False" />
 		<groupItem ID="5" itemID="1" groupID="2" percentage="29.728733070850243" count="2" constantCount="True" />
 		<groupItem ID="6" itemID="2" groupID="2" percentage="21.85423965253317" count="3" constantCount="True" />
 		<groupItem ID="7" itemID="3" groupID="2" percentage="41.228961563744114" count="3" constantCount="True" />
-		<groupItem ID="8" itemID="4" groupID="2" percentage="7.188065712872479" count="5" constantCount="True" />
+		<groupItem ID="8" itemID="4" groupID="2" percentage="7.188065712872479" count="5" constantCount="False" />
 		<groupItem ID="9" itemID="1" groupID="3" percentage="19.297103184479557" count="4" constantCount="True" />
 		<groupItem ID="10" itemID="2" groupID="3" percentage="22.126165969511586" count="5" constantCount="True" />
 		<groupItem ID="11" itemID="3" groupID="3" percentage="26.14291901877519" count="5" constantCount="True" />
-		<groupItem ID="12" itemID="4" groupID="3" percentage="32.43381182723366" count="1" constantCount="True" />
+		<groupItem ID="12" itemID="4" groupID="3" percentage="32.43381182723366" count="1" constantCount="False" />
 		<groupItem ID="13" itemID="1" groupID="4" percentage="27.367469514360167" count="1" constantCount="True" />
 		<groupItem ID="14" itemID="2" groupID="4" percentage="51.39390913885063" count="3" constantCount="True" />
 		<groupItem ID="15" itemID="3" groupID="4" percentage="13.169365369822891" count="3" constantCount="True" />
-		<groupItem ID="16" itemID="4" groupID="4" percentage="8.069255976966303" count="1" constantCount="True" />
+		<groupItem ID="16" itemID="4" groupID="4" percentage="8.069255976966303" count="1" constantCount="False" />
 		<groupItem ID="17" itemID="1" groupID="5" percentage="34.398674870732805" count="2" constantCount="True" />
 		<groupItem ID="18" itemID="2" groupID="5" percentage="31.36647665697271" count="5" constantCount="True" />
 		<groupItem ID="19" itemID="3" groupID="5" percentage="22.854448914254387" count="1" constantCount="True" />
-		<groupItem ID="20" itemID="4" groupID="5" percentage="11.380399558040079" count="3" constantCount="True" />
+		<groupItem ID="20" itemID="4" groupID="5" percentage="11.380399558040079" count="3" constantCount="False" />
 		<groupItem ID="21" itemID="1" groupID="6" percentage="5.967938342950663" count="2" constantCount="True" />
 		<groupItem ID="22" itemID="2" groupID="6" percentage="30.313766253456283" count="5" constantCount="True" />
 		<groupItem ID="23" itemID="3" groupID="6" percentage="28.00912940751603" count="1" constantCount="True" />
-		<groupItem ID="24" itemID="4" groupID="6" percentage="35.709165996077026" count="4" constantCount="True" />
+		<groupItem ID="24" itemID="4" groupID="6" percentage="35.709165996077026" count="4" constantCount="False" />
 		<groupItem ID="25" itemID="1" groupID="7" percentage="33.58807403251829" count="3" constantCount="True" />
 		<groupItem ID="26" itemID="2" groupID="7" percentage="36.009385673893156" count="3" constantCount="True" />
 		<groupItem ID="27" itemID="3" groupID="7" percentage="9.125744049451892" count="4" constantCount="True" />
-		<groupItem ID="28" itemID="4" groupID="7" percentage="21.27679624413667" count="1" constantCount="True" />
+		<groupItem ID="28" itemID="4" groupID="7" percentage="21.27679624413667" count="1" constantCount="False" />
 		<groupItem ID="29" itemID="1" groupID="8" percentage="15.480120722584093" count="5" constantCount="True" />
 		<groupItem ID="30" itemID="2" groupID="8" percentage="22.21446096468723" count="2" constantCount="True" />
 		<groupItem ID="31" itemID="3" groupID="8" percentage="32.872869596842754" count="5" constantCount="True" />
-		<groupItem ID="32" itemID="4" groupID="8" percentage="29.43254871588593" count="4" constantCount="True" />
+		<groupItem ID="32" itemID="4" groupID="8" percentage="29.43254871588593" count="4" constantCount="False" />
 	</groupItemData>
 	<evaluationData>
 		<evaluation ID="1" groupItemID="1" name="Examen 0" date="01/01/2017 01:00 AM" percentage="4.485456167596401" description="Obikoe hrenecu otu hoii. Xiqou hi qarosum visoifis. Vainau qogou poehauqi cam daovipi dasom sebelfo." />

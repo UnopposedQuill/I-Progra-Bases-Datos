@@ -84,6 +84,38 @@ as begin
 end
 go
 
+if object_id('SPmodificarDatosLogin','P') is not null drop procedure SPmodificarDatosLogin;
+go
+/*
+Este procedimiento almacenado recibe un email y una contraseña. Verifica si existe una combinación que 
+coincida con ambos.
+Si no existe una combinación, entonces retorna -1
+Si existe una combinación dentro de los profesores, retorna 1
+Si existe una combinación dentro de los estudiantes, retorna 2
+*/
+create procedure SPmodificarDatosLogin @email nvarchar(50), @contraseña nvarchar(15), @nuevoEmail nvarchar(50), @nuevaContraseña nvarchar(15)
+as begin
+	set nocount on;
+	if exists(select id from Profesor P where P.email = @email and P.contraseña = @contraseña)
+		begin
+		begin transaction
+			begin try
+				update dbo.Profesor
+				set email = @nuevoEmail, contraseña = @nuevaContraseña
+				where email = @email and contraseña = @contraseña
+				commit;
+			end try
+			begin catch
+				rollback;
+				return -50001;
+			end catch;
+		end
+	else if exists(select id from Estudiante E where E.email = @email and E.carnet = @contraseña)
+		return 2;
+	return -1
+end
+go
+
 if object_id('SPinsertarPeriodo','P') is not null drop procedure SPinsertarPeriodo;
 go
 create procedure SPinsertarPeriodo @fechaInicio date, @fechaFinalizacion date
@@ -240,6 +272,7 @@ as begin
 end
 go
 
+--SP No usado-------------------------------------------------------------------------------------------
 if object_id('SPeliminarGrupoXRubro','P') is not null drop procedure SPeliminarGrupoXRubro;
 go
 create procedure SPeliminarGrupoXRubro @idRubro int, @idGrupo int
@@ -252,6 +285,7 @@ as begin
 	commit
 end
 go
+--SP No usado-------------------------------------------------------------------------------------------
 
 if object_id('SPinsertarEvaluacion','P') is not null drop procedure SPinsertarEvaluacion;
 go
