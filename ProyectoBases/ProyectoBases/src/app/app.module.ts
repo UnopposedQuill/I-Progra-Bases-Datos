@@ -16,6 +16,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
 import { UsuarioService } from './usuario/usuario.service';
 import { VariableService } from './shared/variable.service';
 import { UsuarioContenidoComponent } from './usuario/usuario-contenido/usuario-contenido.component';
+import { RegistroNotasComponent } from './registro-notas/registro-notas.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UsuarioContenidoComponent } from './usuario/usuario-contenido/usuario-c
     MenuComponent,
     NotificationComponent,
     UsuarioComponent,
-    UsuarioContenidoComponent
+    UsuarioContenidoComponent,
+    RegistroNotasComponent
   ],
   imports: [
     BrowserModule,

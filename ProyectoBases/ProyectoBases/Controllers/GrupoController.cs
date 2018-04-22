@@ -10,57 +10,57 @@ using ProyectoBases.Models;
 namespace ProyectoBases.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Estudiantes")]
-    public class EstudiantesController : Controller
+    [Route("api/Grupo")]
+    public class GrupoController : Controller
     {
         private readonly ProyectoBasesContext _context;
 
-        public EstudiantesController(ProyectoBasesContext context)
+        public GrupoController(ProyectoBasesContext context)
         {
             _context = context;
         }
 
-        // GET: api/Estudiantes
+        // GET: api/Grupo
         [HttpGet]
-        public IEnumerable<Estudiante> GetEstudiante()
+        public IEnumerable<Grupo> GetGrupo()
         {
-            return _context.Estudiante;
+            return _context.Grupo;
         }
 
-        // GET: api/Estudiantes/5
+        // GET: api/Grupo/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEstudiante([FromRoute] int id)
+        public async Task<IActionResult> GetGrupo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var estudiante = await _context.Estudiante.SingleOrDefaultAsync(m => m.Id == id);
+            var grupo = await _context.Grupo.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (estudiante == null)
+            if (grupo == null)
             {
                 return NotFound();
             }
 
-            return Ok(estudiante);
+            return Ok(grupo);
         }
 
-        // PUT: api/Estudiantes/5
+        // PUT: api/Grupo/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEstudiante([FromRoute] int id, [FromBody] Estudiante estudiante)
+        public async Task<IActionResult> PutGrupo([FromRoute] int id, [FromBody] Grupo grupo)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != estudiante.Id)
+            if (id != grupo.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(estudiante).State = EntityState.Modified;
+            _context.Entry(grupo).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ProyectoBases.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EstudianteExists(id))
+                if (!GrupoExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace ProyectoBases.Controllers
             return NoContent();
         }
 
-        // POST: api/Estudiantes
+        // POST: api/Grupo
         [HttpPost]
-        public async Task<IActionResult> PostEstudiante([FromBody] Estudiante estudiante)
+        public async Task<IActionResult> PostGrupo([FromBody] Grupo grupo)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Estudiante.Add(estudiante);
+            _context.Grupo.Add(grupo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEstudiante", new { id = estudiante.Id }, estudiante);
+            return CreatedAtAction("GetGrupo", new { id = grupo.Id }, grupo);
         }
 
-        // DELETE: api/Estudiantes/5
+        // DELETE: api/Grupo/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEstudiante([FromRoute] int id)
+        public async Task<IActionResult> DeleteGrupo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var estudiante = await _context.Estudiante.SingleOrDefaultAsync(m => m.Id == id);
-            if (estudiante == null)
+            var grupo = await _context.Grupo.SingleOrDefaultAsync(m => m.Id == id);
+            if (grupo == null)
             {
                 return NotFound();
             }
 
-            _context.Estudiante.Remove(estudiante);
+            _context.Grupo.Remove(grupo);
             await _context.SaveChangesAsync();
 
-            return Ok(estudiante);
+            return Ok(grupo);
         }
 
-        private bool EstudianteExists(int id)
+        private bool GrupoExists(int id)
         {
-            return _context.Estudiante.Any(e => e.Id == id);
+            return _context.Grupo.Any(e => e.Id == id);
         }
     }
 }

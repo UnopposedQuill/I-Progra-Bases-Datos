@@ -9,9 +9,18 @@
     <label for="email">email</label>
     <input type="text" formControlName="email" id="email">
   </div>
-  
+
   <div>
-    <label for="contraseña">contraseña</label>
-    <input type="text" formControlName="contraseña" id="contraseña">
+    <select>
+      <option value="1">Grupo 1</option>
+    </select>
+  </div>
+
+  <div (click)="seleccionar(usuario,apellido)" *ngFor="let usuario of usuarios">
+    {{usuario.nombre }} {{ usuario.apellido}}
+  </div>
+
+  <div>
+    <button (click)="agregar">Agregar</button>
   </div>
 </form>

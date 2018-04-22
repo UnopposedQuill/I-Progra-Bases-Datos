@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuario } from './usuario';
+import { Grupo } from './grupo';
 
 @Injectable()
 export class UsuarioService {
@@ -12,9 +13,19 @@ export class UsuarioService {
       return this.http.get(this.api).toPromise();
     }
 
+    getCodigoGrupo(){
+      return this.http.get('api/grupo').toPromise()
+    }
+
+
     grabar(usuario: Usuario){
       return this.http.post(this.api,
         JSON.stringify(usuario),
         { headers: this.headers }).toPromise();
+    }
+
+
+     agregar() {
+
     }
 }

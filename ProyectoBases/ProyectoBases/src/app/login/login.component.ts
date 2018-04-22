@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   ) { 
     this.frmLogin = this.fb.group({
       'email': ['',Validators.email],
-      'contraseña': ['',Validators.required],
+      'carnet': ['',Validators.required],
     })
   }
   ngOnInit() {

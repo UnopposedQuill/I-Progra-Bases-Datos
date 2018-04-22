@@ -2,10 +2,15 @@
 
   <div class="buscar">
 
-    <div (click)="seleccionar(usuario)" *ngFor="let usuario of usuarios">
-      {{usuario.nombre}}
+    <!--<div *ngFor="let grupo of grupos">
+      {{grupo.codigoGrupo}} {{ grupo.nombre}}
+    </div>-->
+
+    <div (click)="seleccionar(usuario,apellido)" *ngFor="let usuario of usuarios">
+      {{usuario.nombre }} {{ usuario.apellido}}
     </div>
 
+ 
   </div>
 
   <app-usuario-contenido [usuario]="usuario" ></app-usuario-contenido>

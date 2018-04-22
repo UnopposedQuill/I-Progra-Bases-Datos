@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProyectoBases.Models
 {
-    public class Profesor
+    public class Grupo
     {
         [Key]
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string Email { get; set; }
-        public string contraseña { get; set; }
+        public string CodigoGrupo { get; set; }
+        
     }
 }

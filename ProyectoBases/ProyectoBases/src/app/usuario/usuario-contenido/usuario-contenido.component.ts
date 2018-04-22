@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Usuario } from '../usuario';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
 
 @Component({
   selector: 'app-usuario-contenido',
@@ -14,7 +14,7 @@ export class UsuarioContenidoComponent implements OnInit, OnChanges {
     this.frmUsuario = this.fb.group({
       nombre:['',Validators.required],
       email:['',Validators.email],
-      contraseña:['',Validators.required],
+      carnet:['',Validators.required],
     })
    }
 
@@ -24,9 +24,9 @@ export class UsuarioContenidoComponent implements OnInit, OnChanges {
   ngOnChanges(){
     if (this.usuario === undefined) return;
     this.frmUsuario.setValue({
-      nombre: this.usuario.Nombre,
-      email: this.usuario.Email,
-      contraseña: this.usuario.contraseña
+      nombre: this.usuario.nombre,
+      email: this.usuario.email,
+      carnet: this.usuario.carnet
     })
   }
 

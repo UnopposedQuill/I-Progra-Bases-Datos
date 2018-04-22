@@ -15,7 +15,7 @@ export class RegistroComponent implements OnInit {
     this.frmRegistro = this.fb.group({
       nombre: ['',Validators.required],
       email: ['',Validators.email],
-      contraseña: ['',Validators.required],
+      carnet: ['',Validators.required],
       confirmar: ['',Validators.required],
 
     })
@@ -26,7 +26,7 @@ export class RegistroComponent implements OnInit {
 
   validacion(){
     const frm = this.frmRegistro.value;
-    if (frm.confirmar==frm.contraseña)
+    if (frm.confirmar==frm.carnet)
       return true;
     else 
       return false;
@@ -36,9 +36,9 @@ export class RegistroComponent implements OnInit {
   registro(){
     const frm = this.frmRegistro.value;
     let usuario = new Usuario();
-    usuario.Email = frm.email;
-    usuario.Nombre = frm.nombre;
-    usuario.contraseña = frm.contraseña;
+    usuario.email = frm.email;
+    usuario.nombre = frm.nombre;
+    usuario.carnet = frm.carnet;
 
     this.usuarioSrv.grabar(usuario).then();
   }

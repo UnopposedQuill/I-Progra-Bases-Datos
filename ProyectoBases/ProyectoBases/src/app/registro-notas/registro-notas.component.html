@@ -1,0 +1,31 @@
+<form [formGroup]="frmRegistroNotas">
+  
+    <div>
+      <label for="nombre">Nombre</label>
+      <input type="text" formControlName="nombre" id="nombre">
+    </div>
+  
+    <div>
+        <select>
+          <option value="1">Examen</option>
+          <option value="2">Proyecto</option>
+          <option value="3">Quiz</option>
+          <option value="4">Tarea</option>
+        </select>
+      </div>
+  
+    <div>
+      <label for="nota">Nota</label>
+      <input type="text" formControlName="nota" id="nota">
+    </div>
+  
+    <div>
+      <label for="confirmar">Confirmar Nota</label>
+      <input type="text" formControlName="confirmar" id="confirmar">
+    </div>
+  
+    <button (click)="registroNota()"
+    [disabled]="!frmRegistroNotas.value || !validacionNota()">Agregar Nota</button>
+  
+  
+  </form>

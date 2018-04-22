@@ -83,6 +83,7 @@ var usuario_component_1 = __webpack_require__("./src/app/usuario/usuario.compone
 var usuario_service_1 = __webpack_require__("./src/app/usuario/usuario.service.ts");
 var variable_service_1 = __webpack_require__("./src/app/shared/variable.service.ts");
 var usuario_contenido_component_1 = __webpack_require__("./src/app/usuario/usuario-contenido/usuario-contenido.component.ts");
+var registro_notas_component_1 = __webpack_require__("./src/app/registro-notas/registro-notas.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -96,7 +97,8 @@ var AppModule = /** @class */ (function () {
                 menu_component_1.MenuComponent,
                 notification_component_1.NotificationComponent,
                 usuario_component_1.UsuarioComponent,
-                usuario_contenido_component_1.UsuarioContenidoComponent
+                usuario_contenido_component_1.UsuarioContenidoComponent,
+                registro_notas_component_1.RegistroNotasComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -118,7 +120,7 @@ exports.AppModule = AppModule;
 /***/ "./src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  home works!\r\n</p>\r\n"
+module.exports = ""
 
 /***/ }),
 
@@ -191,7 +193,7 @@ var LoginComponent = /** @class */ (function () {
         this.variableSrv = variableSrv;
         this.frmLogin = this.fb.group({
             'email': ['', forms_1.Validators.email],
-            'contraseña': ['', forms_1.Validators.required],
+            'carnet': ['', forms_1.Validators.required],
         });
     }
     LoginComponent.prototype.ngOnInit = function () {
@@ -218,10 +220,70 @@ exports.LoginComponent = LoginComponent;
 
 /***/ }),
 
+/***/ "./src/app/registro-notas/registro-notas.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form [formGroup]=\"frmRegistroNotas\">\n  \n    <div>\n      <label for=\"nombre\">Nombre</label>\n      <input type=\"text\" formControlName=\"nombre\" id=\"nombre\">\n    </div>\n  \n    <div>\n        <select>\n          <option value=\"1\">Examen</option>\n          <option value=\"2\">Proyecto</option>\n          <option value=\"3\">Quiz</option>\n          <option value=\"4\">Tarea</option>\n        </select>\n      </div>\n  \n    <div>\n      <label for=\"nota\">Nota</label>\n      <input type=\"text\" formControlName=\"nota\" id=\"nota\">\n    </div>\n  \n    <div>\n      <label for=\"confirmar\">Confirmar Nota</label>\n      <input type=\"text\" formControlName=\"confirmar\" id=\"confirmar\">\n    </div>\n  \n    <button (click)=\"registroNota()\"\n    [disabled]=\"!frmRegistroNotas.value || !validacionNota()\">Agregar Nota</button>\n  \n  \n  </form>"
+
+/***/ }),
+
+/***/ "./src/app/registro-notas/registro-notas.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+var RegistroNotasComponent = /** @class */ (function () {
+    function RegistroNotasComponent(fb) {
+        this.fb = fb;
+        this.lengt = 2;
+        this.frmRegistroNotas = this.fb.group({
+            nombre: ['', forms_1.Validators.required],
+            nota: ['', forms_1.Validators.required].length,
+            confirmar: ['', forms_1.Validators.required],
+        });
+    }
+    RegistroNotasComponent.prototype.ngOnInit = function () {
+    };
+    RegistroNotasComponent.prototype.validacionNota = function () {
+        var frm = this.frmRegistroNotas.value;
+        if (frm.confirmar == frm.nota)
+            return true;
+        else
+            return false;
+    };
+    RegistroNotasComponent.prototype.registroNota = function () {
+    };
+    RegistroNotasComponent = __decorate([
+        core_1.Component({
+            selector: 'app-registro-notas',
+            template: __webpack_require__("./src/app/registro-notas/registro-notas.component.html"),
+            styles: []
+        }),
+        __metadata("design:paramtypes", [forms_1.FormBuilder])
+    ], RegistroNotasComponent);
+    return RegistroNotasComponent;
+}());
+exports.RegistroNotasComponent = RegistroNotasComponent;
+
+
+/***/ }),
+
 /***/ "./src/app/registro/registro.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form [formGroup]=\"frmRegistro\">\r\n  \r\n  <div>\r\n    <label for=\"nombre\">Nombre</label>\r\n    <input type=\"text\" formControlName=\"nombre\" id=\"nombre\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"email\">Email</label>\r\n    <input type=\"text\" formControlName=\"email\" id=\"email\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"contraseña\">Contraseña</label>\r\n    <input type=\"password\" formControlName=\"contraseña\" id=\"contraseña\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"confirmar\">Confirmar</label>\r\n    <input type=\"password\" formControlName=\"confirmar\" id=\"confirmar\">\r\n  </div>\r\n\r\n  <button (click)=\"registro()\"\r\n  [disabled]=\"!frmRegistro.valid || !validacion()\">Registrarse</button>\r\n\r\n\r\n</form>"
+module.exports = "<form [formGroup]=\"frmRegistro\">\r\n  \r\n  <div>\r\n    <label for=\"nombre\">Nombre</label>\r\n    <input type=\"text\" formControlName=\"nombre\" id=\"nombre\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"email\">Email</label>\r\n    <input type=\"text\" formControlName=\"email\" id=\"email\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"carnet\">Contraseña</label>\r\n    <input type=\"password\" formControlName=\"carnet\" id=\"carnet\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"confirmar\">Confirmar</label>\r\n    <input type=\"password\" formControlName=\"confirmar\" id=\"confirmar\">\r\n  </div>\r\n\r\n  <button (click)=\"registro()\"\r\n  [disabled]=\"!frmRegistro.valid || !validacion()\">Registrarse</button>\r\n\r\n\r\n</form>"
 
 /***/ }),
 
@@ -251,7 +313,7 @@ var RegistroComponent = /** @class */ (function () {
         this.frmRegistro = this.fb.group({
             nombre: ['', forms_1.Validators.required],
             email: ['', forms_1.Validators.email],
-            contraseña: ['', forms_1.Validators.required],
+            carnet: ['', forms_1.Validators.required],
             confirmar: ['', forms_1.Validators.required],
         });
     }
@@ -259,7 +321,7 @@ var RegistroComponent = /** @class */ (function () {
     };
     RegistroComponent.prototype.validacion = function () {
         var frm = this.frmRegistro.value;
-        if (frm.confirmar == frm.contraseña)
+        if (frm.confirmar == frm.carnet)
             return true;
         else
             return false;
@@ -267,9 +329,9 @@ var RegistroComponent = /** @class */ (function () {
     RegistroComponent.prototype.registro = function () {
         var frm = this.frmRegistro.value;
         var usuario = new usuario_1.Usuario();
-        usuario.Email = frm.email;
-        usuario.Nombre = frm.nombre;
-        usuario.contraseña = frm.contraseña;
+        usuario.email = frm.email;
+        usuario.nombre = frm.nombre;
+        usuario.carnet = frm.carnet;
         this.usuarioSrv.grabar(usuario).then();
     };
     RegistroComponent = __decorate([
@@ -298,10 +360,12 @@ var home_component_1 = __webpack_require__("./src/app/home/home.component.ts");
 var login_component_1 = __webpack_require__("./src/app/login/login.component.ts");
 var usuario_component_1 = __webpack_require__("./src/app/usuario/usuario.component.ts");
 var registro_component_1 = __webpack_require__("./src/app/registro/registro.component.ts");
+var registro_notas_component_1 = __webpack_require__("./src/app/registro-notas/registro-notas.component.ts");
 exports.RouterConfig = [
     { path: 'home', component: home_component_1.HomeComponent },
     { path: 'usuario', component: usuario_component_1.UsuarioComponent },
     { path: 'registro', component: registro_component_1.RegistroComponent },
+    { path: 'registroNotas', component: registro_notas_component_1.RegistroNotasComponent },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: '', redirectTo: 'home', pathMatch: "full" },
     { path: '**', redirectTo: 'home' },
@@ -313,7 +377,7 @@ exports.RouterConfig = [
 /***/ "./src/app/shared/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav>\r\n  <ul>\r\n    <li><a routerLink=\"home\">Home</a></li>\r\n    <li><a *ngIf=\"!loggedIn\" routerLink=\"usuario\">Usuario</a></li>\r\n    <li><a *ngIf=\"!loggedIn || loggedUser\" routerLink=\"registro\">Registro</a></li>\r\n    <li><a *ngIf=\"!loggedIn\" routerLink=\"login\">Login</a></li>\r\n    <li><a *ngIf=\"loggedIn\"(click)=\"logout()\">Logout</a></li>\r\n  </ul>\r\n\r\n</nav>"
+module.exports = "<nav>\r\n  <ul>\r\n    <li><a routerLink=\"home\">Home</a></li>\r\n    <li><a *ngIf=\"loggedIn\" routerLink=\"usuario\">Usuario</a></li>\r\n    <li><a *ngIf=\"!loggedIn\" routerLink=\"registro\">Registro</a></li>\r\n    <li><a *ngIf=\"loggedIn\" routerLink=\"registroNotas\">Registro Notas</a></li>\r\n    <li><a *ngIf=\"!loggedIn\" routerLink=\"login\">Login</a></li>\r\n    <li><a *ngIf=\"loggedIn\"(click)=\"logout()\">Logout</a></li>\r\n  </ul>\r\n\r\n</nav>"
 
 /***/ }),
 
@@ -374,7 +438,7 @@ exports.MenuComponent = MenuComponent;
 /***/ "./src/app/shared/notification/notification.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf= \"tipo === 'info' || tipo ==='error'\"\n  [ngClass]=\"{ 'info': tipo==='info','error': tipo ==='error' }\">\n  {{mensaje}}\n  \n</div>"
+module.exports = "<div *ngIf= \"tipo === 'info' || tipo ==='error'\"\r\n  [ngClass]=\"{ 'info': tipo==='info','error': tipo ==='error' }\">\r\n  {{mensaje}}\r\n  \r\n</div>"
 
 /***/ }),
 
@@ -501,14 +565,14 @@ exports.VariableService = VariableService;
 /***/ "./src/app/usuario/usuario-contenido/usuario-contenido.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form [formGroup]=\"frmUsuario\">\n\n  <div>\n    <label for=\"nombre\">Nombre</label>\n    <input type=\"text\" formControlName=\"nombre\" id=\"nombre\">\n  </div>\n\n  <div>\n    <label for=\"email\">email</label>\n    <input type=\"text\" formControlName=\"email\" id=\"email\">\n  </div>\n  \n  <div>\n    <label for=\"contraseña\">contraseña</label>\n    <input type=\"text\" formControlName=\"contraseña\" id=\"contraseña\">\n  </div>\n</form>\n"
+module.exports = "<form [formGroup]=\"frmUsuario\">\r\n\r\n  <div>\r\n    <label for=\"nombre\">Nombre</label>\r\n    <input type=\"text\" formControlName=\"nombre\" id=\"nombre\">\r\n  </div>\r\n\r\n  <div>\r\n    <label for=\"email\">email</label>\r\n    <input type=\"text\" formControlName=\"email\" id=\"email\">\r\n  </div>\r\n\r\n  <div>\r\n    <select>\r\n      <option value=\"1\">Grupo 1</option>\r\n    </select>\r\n  </div>\r\n\r\n  <div (click)=\"seleccionar(usuario,apellido)\" *ngFor=\"let usuario of usuarios\">\r\n    {{usuario.nombre }} {{ usuario.apellido}}\r\n  </div>\r\n\r\n  <div>\r\n    <button (click)=\"agregar\">Agregar</button>\r\n  </div>\r\n</form>\r\n"
 
 /***/ }),
 
 /***/ "./src/app/usuario/usuario-contenido/usuario-contenido.component.scss":
 /***/ (function(module, exports) {
 
-module.exports = "div {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\nlabel {\n  color: blue;\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 100px;\n          flex: 1 0 100px; }\n\ninput {\n  -webkit-box-flex: 2;\n      -ms-flex-positive: 2;\n          flex-grow: 2; }\n"
+module.exports = "div {\n  margin-top: 10px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\nlabel {\n  color: black;\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 100px;\n          flex: 1 0 100px; }\n\ninput {\n  -webkit-box-flex: 2;\n      -ms-flex-positive: 2;\n          flex-grow: 2; }\n\nselect {\n  margin-top: 10px; }\n\nbutton {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-top: 10px; }\n"
 
 /***/ }),
 
@@ -536,7 +600,7 @@ var UsuarioContenidoComponent = /** @class */ (function () {
         this.frmUsuario = this.fb.group({
             nombre: ['', forms_1.Validators.required],
             email: ['', forms_1.Validators.email],
-            contraseña: ['', forms_1.Validators.required],
+            carnet: ['', forms_1.Validators.required],
         });
     }
     UsuarioContenidoComponent.prototype.ngOnInit = function () {
@@ -545,9 +609,9 @@ var UsuarioContenidoComponent = /** @class */ (function () {
         if (this.usuario === undefined)
             return;
         this.frmUsuario.setValue({
-            nombre: this.usuario.Nombre,
-            email: this.usuario.Email,
-            contraseña: this.usuario.contraseña
+            nombre: this.usuario.nombre,
+            email: this.usuario.email,
+            carnet: this.usuario.carnet
         });
     };
     __decorate([
@@ -572,7 +636,7 @@ exports.UsuarioContenidoComponent = UsuarioContenidoComponent;
 /***/ "./src/app/usuario/usuario.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"contenedor\">\n\n  <div class=\"buscar\">\n\n    <div (click)=\"seleccionar(usuario)\" *ngFor=\"let usuario of usuarios\">\n      {{usuario.nombre}}\n    </div>\n\n  </div>\n\n  <app-usuario-contenido [usuario]=\"usuario\" ></app-usuario-contenido>\n\n</div>"
+module.exports = "<div class=\"contenedor\">\r\n\r\n  <div class=\"buscar\">\r\n\r\n    <!--<div *ngFor=\"let grupo of grupos\">\r\n      {{grupo.codigoGrupo}} {{ grupo.nombre}}\r\n    </div>-->\r\n\r\n    <div (click)=\"seleccionar(usuario,apellido)\" *ngFor=\"let usuario of usuarios\">\r\n      {{usuario.nombre }} {{ usuario.apellido}}\r\n    </div>\r\n\r\n \r\n  </div>\r\n\r\n  <app-usuario-contenido [usuario]=\"usuario\" ></app-usuario-contenido>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -607,6 +671,10 @@ var UsuarioComponent = /** @class */ (function () {
         this.usuarioSrv.getUsuario()
             .then(function (d) {
             _this.usuarios = d;
+        });
+        this.usuarioSrv.getCodigoGrupo()
+            .then(function (a) {
+            _this.grupos = a;
         });
     }
     UsuarioComponent.prototype.ngOnInit = function () {
@@ -655,8 +723,13 @@ var UsuarioService = /** @class */ (function () {
     UsuarioService.prototype.getUsuario = function () {
         return this.http.get(this.api).toPromise();
     };
+    UsuarioService.prototype.getCodigoGrupo = function () {
+        return this.http.get('api/grupo').toPromise();
+    };
     UsuarioService.prototype.grabar = function (usuario) {
         return this.http.post(this.api, JSON.stringify(usuario), { headers: this.headers }).toPromise();
+    };
+    UsuarioService.prototype.agregar = function () {
     };
     UsuarioService = __decorate([
         core_1.Injectable(),

@@ -10,24 +10,24 @@ using ProyectoBases.Models;
 namespace ProyectoBases.Controllers
 {
     [Produces("application/json")]
-    [Route("api/usuarios")]
-    public class ProfesorsController : Controller
+    [Route("api/Profesor")]
+    public class ProfesorController : Controller
     {
         private readonly ProyectoBasesContext _context;
 
-        public ProfesorsController(ProyectoBasesContext context)
+        public ProfesorController(ProyectoBasesContext context)
         {
             _context = context;
         }
 
-        // GET: api/Profesors
+        // GET: api/Profesor
         [HttpGet]
         public IEnumerable<Profesor> GetProfesor()
         {
             return _context.Profesor;
         }
 
-        // GET: api/Profesors/5
+        // GET: api/Profesor/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProfesor([FromRoute] int id)
         {
@@ -46,7 +46,7 @@ namespace ProyectoBases.Controllers
             return Ok(profesor);
         }
 
-        // PUT: api/Profesors/5
+        // PUT: api/Profesor/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfesor([FromRoute] int id, [FromBody] Profesor profesor)
         {
@@ -81,7 +81,7 @@ namespace ProyectoBases.Controllers
             return NoContent();
         }
 
-        // POST: api/Profesors
+        // POST: api/Profesor
         [HttpPost]
         public async Task<IActionResult> PostProfesor([FromBody] Profesor profesor)
         {
@@ -96,7 +96,7 @@ namespace ProyectoBases.Controllers
             return CreatedAtAction("GetProfesor", new { id = profesor.Id }, profesor);
         }
 
-        // DELETE: api/Profesors/5
+        // DELETE: api/Profesor/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfesor([FromRoute] int id)
         {

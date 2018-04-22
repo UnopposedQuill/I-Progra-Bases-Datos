@@ -14,8 +14,14 @@ namespace ProyectoBases.Models
         {
         }
 
-        public DbSet<ProyectoBases.Models.Profesor> Profesor { get; set; }
 
         public DbSet<ProyectoBases.Models.Estudiante> Estudiante { get; set; }
+
+
+        public DbSet<ProyectoBases.Models.Profesor> Profesor { get; set; }
+
+
+        public DbSet<ProyectoBases.Models.Grupo> Grupo { get; set; }
+
     }
 }
